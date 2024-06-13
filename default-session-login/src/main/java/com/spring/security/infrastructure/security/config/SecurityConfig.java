@@ -26,12 +26,15 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**").permitAll() // css 파일 접근 허용
+                        .requestMatchers("/login").permitAll() // login 경로 접근 허용
                         .requestMatchers("/").permitAll() // 루트 경로는 허용
                         .anyRequest().authenticated() // 그 외 경로는 비허용
                 );
 
         http
-                .formLogin(Customizer.withDefaults()); // 폼 로그인, 기본 설정 따라감
+                .formLogin(form -> form
+                        .loginPage("/login") // 커스텀 로그인 페이지 지정
+                );
 
         return http.build();
     }

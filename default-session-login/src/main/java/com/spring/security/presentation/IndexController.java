@@ -10,4 +10,14 @@ public class IndexController {
     public String index() {
         return "login";
     }
+
+    @GetMapping(value = "/admin")
+    public String admin(){
+        return "admin";
+    }
+
+    @GetMapping(value = "/user")
+    public String user(){
+        return "user";
+    }
 }
