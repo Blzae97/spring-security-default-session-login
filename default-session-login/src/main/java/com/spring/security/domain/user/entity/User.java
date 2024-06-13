@@ -31,4 +31,5 @@ public class User extends DateTimeEntity {
         this.username = username;
         this.password = password;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.spring.security.infrastructure.common.config;
 
 import com.spring.security.application.user.service.UserService;
+import com.spring.security.domain.user.repository.UserAuthorityRepository;
 import com.spring.security.domain.user.repository.UserRepository;
 import com.spring.security.domain.user.service.UserRegisterService;
 import com.spring.security.infrastructure.user.repository.DefaultUserRepository;
@@ -50,7 +51,8 @@ public class BeanConfig {
      */
     @Bean
     public UserRegisterService userRegisterService(UserRepository userRepository,
+                                                   UserAuthorityRepository userAuthorityRepository,
                                                    PasswordEncoder passwordEncoder) {
-        return new UserService(userRepository, passwordEncoder);
+        return new UserService(userRepository, userAuthorityRepository, passwordEncoder);
     }
 }
