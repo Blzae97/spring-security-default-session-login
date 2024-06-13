@@ -13,8 +13,9 @@ public class UserService implements UserRegisterService {
 
     private final UserRepository userRepository;
     private final UserAuthorityRepository userAuthorityRepository;
-
     private final PasswordEncoder passwordEncoder;
+
+    private final Authority DEFAULT_AUTHORITY = Authority.ROLE_READ;
 
     public UserService(UserRepository userRepository,
                        UserAuthorityRepository userAuthorityRepository,
@@ -36,7 +37,7 @@ public class UserService implements UserRegisterService {
         item.encryptPassword(encodePassword); // 암호화 된 비밀번호로 업데이트
 
         UserItem userItem = userRepository.userRegister(item, UserItem.class);// 회원정보 저장 메소드 호출
-        userAuthorityRepository.grantAuthority(userItem.getId(), Authority.ROLE_READ);
+        userAuthorityRepository.grantAuthority(userItem.getId(), DEFAULT_AUTHORITY); // 기본 권한으로 읽기 권한만 부여
     }
 
     /**
