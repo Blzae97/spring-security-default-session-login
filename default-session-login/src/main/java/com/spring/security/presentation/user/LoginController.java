@@ -1,4 +1,4 @@
-package com.spring.security.presentation;
+package com.spring.security.presentation.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

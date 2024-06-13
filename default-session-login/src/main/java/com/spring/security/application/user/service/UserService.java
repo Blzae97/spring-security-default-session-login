@@ -1,0 +1,44 @@
+package com.spring.security.application.user.service;
+
+import com.spring.security.domain.user.dto.UserRegisterItem;
+import com.spring.security.domain.user.repository.UserRepository;
+import com.spring.security.domain.user.service.UserRegisterService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+
+public class UserService implements UserRegisterService {
+
+    private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+     * 유저 정보 저장, 비밀번호 암호화
+     *
+     * @param item 회원정보 객체
+     */
+    @Transactional
+    @Override
+    public void register(UserRegisterItem item) {
+        String encodePassword = encodePassword(item.getPassword()); // 비밀번호 암호화 호출
+        item.encryptPassword(encodePassword); // 암호화 된 비밀번호로 업데이트
+
+        userRepository.userRegister(item); // 회원정보 저장 메소드 호출
+    }
+
+    /**
+     * SCryptPasswordEncoder를 이용한 비밀번호 암호화 메서드
+     *
+     * @param password 비밀번호
+     * @return 암호화 된 문자열
+     */
+    private String encodePassword(String password){
+        return passwordEncoder.encode(password);
+    }
+}
