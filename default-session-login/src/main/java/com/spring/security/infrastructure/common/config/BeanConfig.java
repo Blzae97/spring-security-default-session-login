@@ -4,7 +4,9 @@ import com.spring.security.application.user.service.UserService;
 import com.spring.security.domain.user.repository.UserAuthorityRepository;
 import com.spring.security.domain.user.repository.UserRepository;
 import com.spring.security.domain.user.service.UserRegisterService;
+import com.spring.security.infrastructure.user.repository.DefaultUserAuthorityRepository;
 import com.spring.security.infrastructure.user.repository.DefaultUserRepository;
+import com.spring.security.infrastructure.user.repository.inf.UserAuthorityJpaRepository;
 import com.spring.security.infrastructure.user.repository.inf.UserJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -40,6 +42,17 @@ public class BeanConfig {
     @Bean
     public UserRepository userRepository(UserJpaRepository userJpaRepository) {
         return new DefaultUserRepository(userJpaRepository);
+    }
+
+    /**
+     * UserAuthorityRepository 빈 등록
+     *
+     * @param userAuthorityJpaRepository User Authority 도메인의 JPA Repository
+     * @return DefaultUserAuthorityRepository 객체
+     */
+    @Bean
+    public UserAuthorityRepository userAuthorityRepository(UserAuthorityJpaRepository userAuthorityJpaRepository){
+        return new DefaultUserAuthorityRepository(userAuthorityJpaRepository);
     }
 
     /**
