@@ -25,6 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/css/**").permitAll() // css 파일 접근 허용
                         .requestMatchers("/").permitAll() // 루트 경로는 허용
                         .anyRequest().authenticated() // 그 외 경로는 비허용
                 );
@@ -37,6 +38,7 @@ public class SecurityConfig {
 
     /**
      * DB 회원 데이터 사용전까지 사용
+     *
      * @return UserDetailsService
      */
     @Bean

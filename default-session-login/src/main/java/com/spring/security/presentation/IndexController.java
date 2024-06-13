@@ -1,13 +1,13 @@
 package com.spring.security.presentation;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class IndexController {
 
     @GetMapping(value = "/")
-    public String index(){
-        return "index";
+    public String index() {
+        return "login";
     }
 }
