@@ -1,0 +1,12 @@
+rootProject.name = 'session-login'
+
+includeProject(":default-session-login", "default-session-login")
+includeProject(":redis-session-login", "redis-session-login")
+
+def includeProject(String name, String path){
+    include(name)
+    if(path != null){
+        project(name).projectDir = new File(path)
+    }
+}
+
