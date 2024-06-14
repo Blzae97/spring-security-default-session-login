@@ -36,4 +36,12 @@ public class UserItem {
         this.createdAt = u.getCreatedAt();
         this.updatedAt = u.getUpdatedAt();
     }
+
+    public DefaultUserItem toDefaultUserItem(){
+        return DefaultUserItem.builder()
+                .userId(this.id)
+                .username(this.username)
+                .password(this.password)
+                .build();
+    }
 }

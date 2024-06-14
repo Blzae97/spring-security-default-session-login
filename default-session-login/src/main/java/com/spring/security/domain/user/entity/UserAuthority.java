@@ -5,14 +5,13 @@ import com.spring.security.domain.user.enums.Authority;
 import com.spring.security.infrastructure.common.entity.DateTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 @NoArgsConstructor
 @Getter
-@Entity(name = "user_authority")
+@Entity
 public class UserAuthority extends DateTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

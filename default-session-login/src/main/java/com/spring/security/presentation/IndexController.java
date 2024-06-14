@@ -1,23 +1,24 @@
 package com.spring.security.presentation;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class IndexController {
 
     @GetMapping(value = "/")
-    public String index() {
-        return "login";
+    public Authentication index(Authentication authentication) {
+        return authentication;
     }
 
     @GetMapping(value = "/admin")
-    public String admin(){
+    public String admin() {
         return "admin";
     }
 
     @GetMapping(value = "/user")
-    public String user(){
+    public String user() {
         return "user";
     }
 }

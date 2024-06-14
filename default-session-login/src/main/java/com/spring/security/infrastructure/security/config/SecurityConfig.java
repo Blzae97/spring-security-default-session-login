@@ -1,19 +1,22 @@
 package com.spring.security.infrastructure.security.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(@Qualifier(value = "formLoginUserDetailsService") UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     /**
      * 시큐리티 필터 체인 설정 메서드
@@ -37,17 +40,9 @@ public class SecurityConfig {
                         .loginPage("/login") // 커스텀 로그인 페이지 지정
                 );
 
-        return http.build();
-    }
+        http
+                .userDetailsService(userDetailsService); // 커스텀 UserDetailsService 등록
 
-    /**
-     * DB 회원 데이터 사용전까지 사용
-     *
-     * @return UserDetailsService
-     */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withUsername("user").password("{noop}1111").roles("USER").build();
-        return new InMemoryUserDetailsManager(userDetails);
+        return http.build();
     }
 }
