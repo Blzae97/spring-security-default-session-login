@@ -19,4 +19,8 @@ public class DefaultUserItem {
         this.username = username;
         this.password = password;
     }
+
+    public void hidePassword(){
+        this.password = null;
+    }
 }

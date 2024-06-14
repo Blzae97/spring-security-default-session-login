@@ -3,20 +3,21 @@ package com.spring.security.infrastructure.security.config;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
+    private final AuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(@Qualifier(value = "formLoginUserDetailsService") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(@Qualifier(value = "formUserAuthenticationProvider") AuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
     }
+
 
     /**
      * 시큐리티 필터 체인 설정 메서드
@@ -41,7 +42,7 @@ public class SecurityConfig {
                 );
 
         http
-                .userDetailsService(userDetailsService); // 커스텀 UserDetailsService 등록
+                .authenticationProvider(authenticationProvider);
 
         return http.build();
     }

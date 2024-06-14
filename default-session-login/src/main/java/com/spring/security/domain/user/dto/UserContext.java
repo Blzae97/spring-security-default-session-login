@@ -1,6 +1,8 @@
 package com.spring.security.domain.user.dto;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class UserContext implements UserDetails {
     private final DefaultUserItem userItem;
     private final List<GrantedAuthority> authorityList;
