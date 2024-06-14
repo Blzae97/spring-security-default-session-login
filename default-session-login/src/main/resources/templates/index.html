@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+    <!-- CSRF 토큰을 메타 태그에 포함 -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!-- 제이쿼리 CDN 링크 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<!-- 인증된 사용자일 때만 버튼을 보여줍니다 -->
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <button onclick="logout()">Logout</button>
+</div>
+
+<!-- 로그아웃 처리를 위한 JavaScript -->
+<script th:inline="javascript">
+            function logout() {
+            var csrfToken = $('meta[name="_csrf"]').attr('content');
+            var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:10001/logout',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function(response) {
+                    console.log('Logout successful');
+                    window.location.href = '/';
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error during logout:', error);
+                    window.location.href = '/';
+                }
+            });
+        }
+</script>
+</body>
+</html>
