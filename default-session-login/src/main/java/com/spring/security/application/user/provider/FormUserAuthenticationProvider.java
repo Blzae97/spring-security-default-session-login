@@ -1,5 +1,6 @@
 package com.spring.security.application.user.provider;
 
+import com.spring.security.application.user.details.FormAuthenticationDetails;
 import com.spring.security.domain.user.dto.DefaultUserItem;
 import com.spring.security.domain.user.dto.UserContext;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,6 +41,9 @@ public class FormUserAuthenticationProvider implements AuthenticationProvider {
         if (!passwordEncoder.matches(password, userContext.getPassword())) { // 비밀번호 검증
             throw new BadCredentialsException("회원정보가 일치하지 않습니다.");
         }
+
+        FormAuthenticationDetails details = (FormAuthenticationDetails) authentication.getDetails(); // 해당 부분에서 추가적인 인증 처리가 가능하다.
+        System.out.println("secretKey: " + details.getSecretKey());
 
         DefaultUserItem userItem = userContext.getUserItem();
         userItem.hidePassword(); // 비밀번호 null 처리

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="ht  tp://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
@@ -9,6 +9,7 @@
 <div class="login-container">
     <h2>Login</h2>
     <form th:action="@{/login}" method="post">
+        <input type="hidden" th:value="secret" th:name="secret_key"/>
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
