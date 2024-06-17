@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 @EnableWebSecurity
@@ -17,11 +18,14 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> detailsSource;
+    private final AuthenticationSuccessHandler successHandler;
 
     public SecurityConfig(@Qualifier(value = "formUserAuthenticationProvider") AuthenticationProvider authenticationProvider,
-                          AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> detailsSource) {
+                          AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> detailsSource,
+                          @Qualifier(value = "formAuthenticationSuccessHandler") AuthenticationSuccessHandler successHandler) {
         this.authenticationProvider = authenticationProvider;
         this.detailsSource = detailsSource;
+        this.successHandler = successHandler;
     }
 
 
@@ -47,6 +51,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login") // 커스텀 로그인 페이지 지정
                         .authenticationDetailsSource(detailsSource)
+                        .successHandler(successHandler)
                 );
 
         http
