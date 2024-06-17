@@ -9,23 +9,29 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-
+    @Qualifier(value = "formUserAuthenticationProvider")
     private final AuthenticationProvider authenticationProvider;
     private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> detailsSource;
+    @Qualifier(value = "formAuthenticationSuccessHandler")
     private final AuthenticationSuccessHandler successHandler;
+    @Qualifier(value = "formAuthenticationFailureHandler")
+    private final AuthenticationFailureHandler failureHandler;
 
-    public SecurityConfig(@Qualifier(value = "formUserAuthenticationProvider") AuthenticationProvider authenticationProvider,
+    public SecurityConfig(AuthenticationProvider authenticationProvider,
                           AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> detailsSource,
-                          @Qualifier(value = "formAuthenticationSuccessHandler") AuthenticationSuccessHandler successHandler) {
+                          AuthenticationSuccessHandler successHandler,
+                          AuthenticationFailureHandler failureHandler) {
         this.authenticationProvider = authenticationProvider;
         this.detailsSource = detailsSource;
         this.successHandler = successHandler;
+        this.failureHandler = failureHandler;
     }
 
 
@@ -40,7 +46,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**").permitAll() // css 파일 접근 허용
-                        .requestMatchers("/login").permitAll() // login 경로 접근 허용
+                        .requestMatchers("/login*").permitAll() // login 경로 접근 허용
                         .requestMatchers("/logout").permitAll() // logout 경로 접근 허용
                         .requestMatchers("/register").permitAll() // register 경로 접근 허용
                         .requestMatchers("/").permitAll() // 루트 경로는 허용
@@ -52,6 +58,7 @@ public class SecurityConfig {
                         .loginPage("/login") // 커스텀 로그인 페이지 지정
                         .authenticationDetailsSource(detailsSource)
                         .successHandler(successHandler)
+                        .failureHandler(failureHandler)
                 );
 
         http
