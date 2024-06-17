@@ -1,5 +1,6 @@
 package com.spring.security.infrastructure.security.config;
 
+import com.spring.security.application.user.handler.FormAccessDeniedHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -49,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/login*").permitAll() // login 경로 접근 허용
                         .requestMatchers("/logout").permitAll() // logout 경로 접근 허용
                         .requestMatchers("/register").permitAll() // register 경로 접근 허용
+                        .requestMatchers("/admin").hasRole("ADMIN") // admin 경로에는 admin 권한만
                         .requestMatchers("/").permitAll() // 루트 경로는 허용
                         .anyRequest().authenticated() // 그 외 경로는 인증 받아야 함
                 );
@@ -63,6 +65,11 @@ public class SecurityConfig {
 
         http
                 .authenticationProvider(authenticationProvider);
+
+        http
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(new FormAccessDeniedHandler())
+                );
 
         return http.build();
     }
